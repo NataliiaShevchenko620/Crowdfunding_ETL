@@ -11,6 +11,8 @@ The project provides a robust framework for managing crowdfunding data, which in
 
 This pipeline caters to the needs of data analysts who require a reliable and efficient way to prepare crowdfunding data for in-depth analysis. It supports various data operations, such as data cleansing, transformation, and preparation for querying and reporting.
 
+Then the produced CSV files are used as a source data for PostgreSQL database.
+
 ### Objectives
 
 - To facilitate easy and efficient extraction of data from provided .xlsx and .csv files.
@@ -19,6 +21,8 @@ This pipeline caters to the needs of data analysts who require a reliable and ef
 
 By the end of the ETL process, users will have a well-organized database, ready for analysis and insight generation, to aid in the decision-making process of crowdfunding initiatives.
 
+Also this project can be considered as a data migration solution from old technology (Excel) to the new one (PostgreSQL).
+
 ## Setup and Installation
 
 To get the Crowdfunding ETL pipeline up and running on your local machine, follow these steps:
@@ -26,9 +30,9 @@ To get the Crowdfunding ETL pipeline up and running on your local machine, follo
 ### Prerequisites
 
 Before you begin, ensure you have the following installed:
-- Python 3.8 or higher
-- Jupyter Notebooks or JupyterLab
-- Any RDBMS (MySQL, PostgreSQL, etc.), if you want to run the SQL schema
+- Python 3.8 or higher, which can be downloaded from the official [Python website](https://www.python.org/downloads/).
+- Jupyter Notebooks or JupyterLab, which can be installed via pip with `pip install notebook` or `pip install jupyterlab`.
+- PostgreSQL: Make sure you have PostgreSQL installed on your system. You can download it from the official [PostgreSQL website](https://www.postgresql.org/download/). Alternatively, you can use a service like Heroku Postgres if you prefer a cloud-based solution.
 
 ### Clone the Repository
 
@@ -46,11 +50,13 @@ The Crowdfunding ETL project is organized into several key directories and files
 
 - `ETL_Mini_Project_NShevchenko_HKKang_TBrown.ipynb`: This Jupyter Notebook contains the logic for the ETL process, including data extraction, transformation, and loading.
 
-- `contacts.xlsx` and `crowdfunding.xlsx`: These Excel files serve as the data sources from which the ETL process extracts information.
-
 - `schema.png`: A visual representation of the database schema.
 
-- `/Resources`: A directory containing additional resources, like CSV files and documentation, that support the ETL process.
+- `schema.txt`: A textual representation of the database schema. It should be used on https://app.quickdatabasediagrams.com/.
+
+- `queries.sql`: A set of SQL queries to check data in the PostgreSQL database.
+
+- `/Resources`: A directory containing both source and produced data, including `contacts.xlsx` and `crowdfunding.xlsx`, these Excel files serve as the data sources from which the ETL process extracts information. The CSV files are results of the ETL work.
 
 ```
 /Crowdfunding_ETL
@@ -58,21 +64,15 @@ The Crowdfunding ETL project is organized into several key directories and files
 | |-- campaign.csv
 | |-- category.csv
 | |-- contacts.csv
+| |-- contacts.xlsx
+| |-- crowdfunding.xlsx
 | |-- subcategory.csv
 |-- crowdfunding_db_schema.sql
-|-- ETL_Mini_Project_NShevchenko_HK_Kang_T_Brown.ipynb
+|-- ETL_Mini_Project_NShevchenko_HKKang_TBrown.ipynb
 |-- README.md (this file)
-|--schema.png
-|--schema.txt
- 
+|-- schema.png
+|-- schema.txt
 ```
-
-
-## Files
-- `crowdfunding_db_schema.sql`: The SQL schema for the crowdfunding database.
-- `ETL_Mini_Project_NShevchenko_HKKang_TBrown.ipynb`: Jupyter notebook for the ETL process.
-- `contacts.xlsx` and `crowdfunding.xlsx`: Excel files containing the data to be processed.
-- `schema.png`: Image of the database schema.
 
 ## Database Schema
 
@@ -113,72 +113,38 @@ For a complete detailed view of the schema, please refer to the `crowdfunding_db
 
 By following the database schema, the ETL process populates these tables with data transformed from raw datasets, enabling sophisticated querying and analysis.
 
-### Prerequisites
-
-Before you begin, ensure you have the following installed:
-- Python 3.8 or higher, which can be downloaded from the official [Python website](https://www.python.org/downloads/).
-- Jupyter Notebooks or JupyterLab, which can be installed via pip with `pip install notebook` or `pip install jupyterlab`.
-- PostgreSQL: Make sure you have PostgreSQL installed on your system. You can download it from the official [PostgreSQL website](https://www.postgresql.org/download/). Alternatively, you can use a service like Heroku Postgres if you prefer a cloud-based solution.
-
-## Installation
-Provide instructions on setting up the development environment and how to install any required dependencies.
-
 ## Usage
 
 Once you have the repository cloned, prerequisites installed, and the PostgreSQL database set up, follow these steps to run the ETL pipeline:
 
-1. **Start your PostgreSQL server** to ensure the database is running and accepting connections.
+1. **Transform data:** run `ETL_Mini_Project_NShevchenko_HKKang_TBrown.ipynb` notebook to produce CSV files
 
 2. **Create the Database and Tables:**
+
+    Create a new database with name `crowdfunding_db` on your PosgreSQL server.
 
     Run the SQL statements from `crowdfunding_db_schema.sql` to set up the database schema in PostgreSQL. You can do this via the psql command line tool or through a GUI like pgAdmin.
 
     ```bash
-    psql -U username -d database_name -a -f crowdfunding_db_schema.sql
+    psql -U username -d crowdfunding_db -a -f crowdfunding_db_schema.sql
     ```
    
-   Replace `username` with your PostgreSQL username and `database_name` with the name of your database.
+   Replace `username` with your PostgreSQL username.
 
-3. **Configure Database Connection:**
+3. **Upload data to the Database:**
 
-   Open the `ETL_Mini_Project_NShevchenko_HKKang_TBrown.ipynb` notebook in Jupyter. Locate the database connection section and configure it to connect to your PostgreSQL database. Here is an example of what the configuration might look like:
+   Open pgAdmin tool, connect to the server and the database, locate a list of tables and call *Import/Export Data...* wizard for each of the tables in the following sequence:
 
-    ```python
-    connection_parameters = {
-        'dbname': 'your_dbname',
-        'user': 'your_username',
-        'password': 'your_password',
-        'host': 'localhost'
-    }
-    ```
+   - category
+   - subcategory
+   - contacts
+   - campaign
 
-   Replace `your_dbname`, `your_username`, and `your_password` with your actual database name, username, and password.
-
-4. **Run the ETL Notebook:**
-
-   Execute the cells in the `ETL_Mini_Project_NShevchenko_HKKang_TBrown.ipynb` notebook to perform the ETL operations. The notebook is designed to extract data from the provided Excel and CSV files,
-
-
-## Contribution
-
-If you would like to contribute to the Crowdfunding ETL project, please follow these steps:
-
-1. **Fork the Repository**
-
-   Start by forking the project repository on GitHub. This creates a copy of the repository in your own GitHub account and serves as your private workspace for the project.
-
-2. **Clone Your Fork**
-
-   Clone your fork to your local machine to create a local working copy of the code.
-
-   ```bash
-   git clone https://github.com/your-username/Crowdfunding_ETL.git
-   cd Crowdfunding_ETL
-
+   Check the result of import by running queries from `queries.sql`.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE) file for details.
+This project is licensed under the MIT License.
 
 ### MIT License Summary
 
@@ -200,5 +166,4 @@ The MIT License is a permissive license that is short and to the point. It lets 
 - No Liability
 - No Warranty
 
-For the full license text, please refer to the `LICENSE.md` file in the repository.
 
