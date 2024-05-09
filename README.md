@@ -58,6 +58,8 @@ The Crowdfunding ETL project is organized into several key directories and files
 
 - `/Resources`: A directory containing both source and produced data, including `contacts.xlsx` and `crowdfunding.xlsx`, these Excel files serve as the data sources from which the ETL process extracts information. The CSV files are results of the ETL work.
 
+- `/Screenshots`: A directory containing screenshots of SELECT queries to PostgreSQL tables to prove that daat was loaded to the database successfully
+
 ```
 /Crowdfunding_ETL
 |-- /Resources
@@ -67,6 +69,11 @@ The Crowdfunding ETL project is organized into several key directories and files
 | |-- contacts.xlsx
 | |-- crowdfunding.xlsx
 | |-- subcategory.csv
+|-- /Screenshots
+| |-- PostgreSQL_campaign.png
+| |-- PostgreSQL_category.png
+| |-- PostgreSQL_contacts.png
+| |-- PostgreSQL_subcategory.png
 |-- crowdfunding_db_schema.sql
 |-- ETL_Mini_Project_NShevchenko_HKKang_TBrown.ipynb
 |-- README.md (this file)
