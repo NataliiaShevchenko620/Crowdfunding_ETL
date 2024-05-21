@@ -109,12 +109,12 @@ The database schema for the Crowdfunding ETL project is designed to efficiently 
 
 ### Relationships
 
+![schema](schema.png))
+
 The `campaign` table is at the core of our schema, linked to both `contacts` and `category` tables to provide a comprehensive view of each crowdfunding campaign.
 
 - A campaign belongs to a single category and subcategory.
 - Each campaign is created by a contact, with contact details stored in the `contacts` table.
-
-![Database Schema](schema.png)
 
 For a complete detailed view of the schema, please refer to the `crowdfunding_db_schema.sql` file which includes all the SQL commands required to create the database and its tables.
 
